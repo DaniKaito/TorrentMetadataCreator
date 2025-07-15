@@ -431,7 +431,7 @@ class VideoProcessorApp(TkinterDnD.Tk):
         """Gets video duration in seconds using ffprobe."""
         try:
             duration_cmd = [self.tool_paths['ffprobe'], "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", video_file]
-            duration_result = subprocess.run(duration_cmd, check=True, capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            duration_result = subprocess.run(duration_cmd, check=True, capture_output=True, text=True, encoding='utf-8', errors='ignore', creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
             return float(duration_result.stdout.strip())
         except (subprocess.CalledProcessError, FileNotFoundError, ValueError) as e:
             self.log_message(f"  - WARNING: Could not determine video duration. Using default settings. Error: {e}")
@@ -473,7 +473,7 @@ class VideoProcessorApp(TkinterDnD.Tk):
                 # The -P flag automatically saves the output next to the input file using default settings.
                 mtn_command = [self.tool_paths['mtn'], "-P", video_file]
             
-            subprocess.run(mtn_command, check=True, capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            subprocess.run(mtn_command, check=True, capture_output=True, text=True, encoding='utf-8', errors='ignore', creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
         else:
             self.log_message("  - Contact sheet already exists. Skipping.")
 
@@ -496,7 +496,7 @@ class VideoProcessorApp(TkinterDnD.Tk):
                     timestamp = interval * (i + 1)
                     output_path = os.path.join(output_dir, f"{i+1}.jpg")
                     ffmpeg_cmd = [self.tool_paths['ffmpeg'], "-ss", str(timestamp), "-i", video_file, "-vf", "scale=-1:1080", "-vframes", "1", "-q:v", str(SCREENSHOT_QUALITY), "-y", output_path]
-                    subprocess.run(ffmpeg_cmd, check=True, capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+                    subprocess.run(ffmpeg_cmd, check=True, capture_output=True, text=True, encoding='utf-8', errors='ignore', creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
             else:
                 self.log_message("  - Screenshot folder already exists. Skipping.")
 
@@ -506,7 +506,7 @@ class VideoProcessorApp(TkinterDnD.Tk):
             self.log_message("  - Creating .torrent file...")
             tracker = self.tracker_url.get()
             intermodal_cmd = [self.tool_paths[INTERMODAL_EXE], "torrent", "create", "--input", video_file, "--announce", tracker, "--output", output_path, "--private"]
-            subprocess.run(intermodal_cmd, check=True, capture_output=True, text=True, creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
+            subprocess.run(intermodal_cmd, check=True, capture_output=True, text=True, encoding='utf-8', errors='ignore', creationflags=subprocess.CREATE_NO_WINDOW if os.name == 'nt' else 0)
         else:
             self.log_message("  - .torrent file already exists. Skipping.")
 
