@@ -50,6 +50,20 @@ This application relies on several external command-line tools that must be inst
 - **Intermodal:** For creating the `.torrent` file.
   - [Download Intermodal](https://github.com/casey/intermodal/releases/)
 
+## Video Requirement before use
+
+Before proceeding if you want to upload a video directly to ClearJAV, there are some limitation and restriction that you must keep in mind before processing them:
+
+1. The video file name should be the CONTENT ID available on r18.dev, possibly the version that also include the DVD-ID, for example this includes the DVD-ID: 
+[miab00520](https://r18.dev/videos/vod/movies/detail/-/id=miab520/) 
+this one doesn't: [miab00520](https://r18.dev/videos/vod/movies/detail/-/id=miab00520/)
+2. The video must be a single file, so no multiparts.
+3. The content id must be available on r18.dev
+4. Videos must be WEB-DL from DMM (VR and 2D videos, any resolution), not BDRip no DVDRip.
+5. Videos must have mkv/mp4/wmv container, any other is not allowed.
+
+If any of those requirements are not respected, you can still generate the metadata, but don't use the upload automatically check!
+
 ## How to Use
 
 1. **Install Dependencies:** Make sure you have all the prerequisite tools listed above installed. Then, install the required Python libraries:
