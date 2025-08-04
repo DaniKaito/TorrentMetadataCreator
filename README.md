@@ -1,21 +1,41 @@
-# Torrent Metadata Creator
+# Torrent Metadata Creator with ClearJAV API Uploads
 
-A user-friendly graphical interface (GUI) for generating metadata files for video content, preparing it for sharing as a torrent.
+A user-friendly graphical interface (GUI) for generating metadata files for video content and automatically uploading to ClearJAV with intelligent content detection and API integration.
 
-This application streamlines the process of creating a `.torrent` file, generating a `mediainfo` text file, creating a contact sheet (thumbnail grid), and extracting a gallery of screenshots from video files. It can process a single video file or an entire folder containing multiple videos in bulk.
+This application streamlines the process of creating a `.torrent` file, generating a `mediainfo` text file, creating a contact sheet (thumbnail grid), and extracting a gallery of screenshots from video files. It can process a single video file or an entire folder containing multiple videos in bulk now with specialized support for ClearJAV API integration.
 
 ## Features
 
-- **Graphical User Interface:** Easy-to-use interface built with CustomTkinter.
-- **Drag and Drop:** Simply drag your video file or folder onto the application window.
-- **Single or Bulk Processing:** Process one video file or a whole directory at once.
-- **Dependency Checker:** Automatically checks for required command-line tools on startup and provides download links if they are missing.
-- **Torrent File Creation:** Generates a `.torrent` file with your specified announcer URL.
-- **MediaInfo Generation:** Creates a detailed text file with the video's technical specifications.
-- **Contact Sheet:** Generates a single image file with a grid of thumbnails from the video.
-- **Screenshot Gallery:** Extracts a configurable number of high-quality screenshots and saves them in a dedicated folder.
-- **Configuration Saving:** Remembers your tracker URL and screenshot preference between sessions.
-- **Cross-Platform:** Should work on Windows, macOS, and Linux (provided the dependencies are installed).
+### Core Functionality
+- **Modern GUI Interface:** Clean, intuitive interface built with CustomTkinter
+- **Drag & Drop Support:** Simply drag video files or folders onto the application
+- **Batch Processing:** Process single files or entire directories efficiently
+- **Auto-Dependency Detection:** Automatically checks and guides installation of required tools
+
+### Metadata Generation
+- **Torrent File Creation:** Generates optimized `.torrent` files with custom announce URLs
+- **MediaInfo Reports:** Creates detailed technical specification files
+- **Contact Sheets:** Generates professional thumbnail grid previews
+- **Screenshot Galleries:** Extracts high-quality screenshots with customizable counts
+- **Smart File Naming:** Intelligent naming based on content detection
+
+### API Integration & Auto-Upload
+- **ClearJAV API Integration:** Full API support with automatic torrent uploads
+- **R18.dev Content Validation:** Cross-references content against R18.dev database
+- **Duplicate Detection:** Automatically checks for existing content before upload
+- **API Key Validation:** Real-time validation of API credentials
+- **Anonymous Upload Support:** Optional anonymous posting capabilities
+
+### Content Intelligence
+- **JAV Content Recognition:** Automatic detection and parsing of JAV content IDs
+- **Metadata Enrichment:** Fetches additional content data from external APIs  
+- **Resolution Detection:** Automatically determines and maps video resolutions
+
+### Advanced Options
+- **Configuration Persistence:** Saves all settings between sessions
+- **Progress Tracking:** Real-time progress monitoring with detailed logs
+- **Error Handling:** Comprehensive error reporting and recovery
+- **Cross-Platform:** Windows, macOS, and Linux support
 
 ## Prerequisites
 
@@ -42,18 +62,35 @@ This application relies on several external command-line tools that must be inst
    ```
 3. **Dependency Check:** The application will first check if all required tools are found. If any are missing, it will provide links to download them.
 4. **Select Input:**
-   - **Drag and Drop:** Drag a single video file (`.mp4`, `.mkv`, etc.) or a folder containing video files directly onto the application window.
+   - **Drag and Drop:** Drag a single video file (`.mp4`, `.mkv`, `.wmv`) or a folder containing video files directly onto the application window.
    - **Browse:** Click the "Browse..." button to select a file or folder manually.
 5. **Set Options:**
    - Enter your tracker's **Announce URL**. This is required to create the `.torrent` file.
-   - Check or uncheck the "Generate 15 Screenshots" box as needed.
-6. **Generate Files:** Click the "Generate Files" button.
-7. **Monitor Progress:** The application will display the current status and a log of its actions. The progress bar will show the overall progress.
-8. **Find Your Files:** The generated files (`.torrent`, `.txt`, contact sheet, and screenshot folder) will be saved in the same directory as the original video file(s).
+   - Check or uncheck the "Generate 15 Screenshots" box (needed for manual uploads or when the gallery images are missing from r18.dev)
+   - Insert API Key and press Validate button(you can generate an API Key from your Profile > Settings > API Keys)
+   - *Optional* Select the video file title you prefer (from Content ID - DVD ID - Torrent Title)
+   - *Optional* Check Anonymous (if you don't want to display your name in the release)
+   - *Optional* Check Personal Release (if you ripped the video yourself and want to add a custom -TAG name at the end of the torrent title)
+   - *Optional* Insert a Tag Name, usually your username or release group.
+   - Internal and Bypass Mod. Queue are reserved to Intrnal/Mod members.
+6. **r18.dev Validation:** Before the script starts generating files, if you choose to upload them automatically, it will first verify if the content id exist on r18.dev check the DVD-ID and Release date (if any of them are missing you need to insert them manually in a dialoge window that will appear).
+7. **Generate Files:** Click the "Generate Files" button.
+8. **Monitor Progress:** The application will display the current status and a log of its actions. The progress bar will show the overall progress.
+9. **Duplicate Detection:** In case the DVD-ID already exist on the website the script will open a pop up asking if you want to proceed uploading that file or skip it, usually you can upload a "duplicate" when yours have a better quality.
+10. **Automatic Upload:** After all the checks are passed and the files have been generated, it will proceed to send an API Request to automatic upload the torrent to the website, you will need to download the .torrent generated by the website and seed that torrent.
 
 ## Windows executable
 
 I've compiled the script into a portable .exe file for all Windows users, you can find it on the Releases tab on the Github.
+Alternatively you can compile it yourself:
+To compile your own executable:
+```bash
+# Install PyInstaller
+pip install pyinstaller
+
+# Create executable  
+pyinstaller --onefile --windowed --name "Torrent Metadata Creator" --icon="cj.ico" --add-data "cj.ico;." torrent-metadata-creator.py
+```
 
 ## Python Dependencies
 
@@ -61,5 +98,6 @@ The script requires the following Python libraries:
 
 - `customtkinter`: For the modern user interface elements.
 - `tkinterdnd2`: To enable drag-and-drop functionality.
+- `requests` - API communications
 
 You can install them using the provided `requirements.txt` file.
