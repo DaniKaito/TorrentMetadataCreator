@@ -1213,6 +1213,8 @@ class VideoProcessorApp(TkinterDnD.Tk):
             video_section = re.search(r'Video[\s\S]*?(?=\n\n|\nAudio|\Z)', mediainfo_text)
             if video_section:
                 video_content = video_section.group(0)
+                
+                # First, check 'Format'
                 format_match = re.search(r'Format\s*:\s*([^\n]+)', video_content)
                 if format_match:
                     format_name = format_match.group(1).strip()
@@ -1226,6 +1228,24 @@ class VideoProcessorApp(TkinterDnD.Tk):
                         return "MPEG-2"
                     elif 'VC-1' in format_name:
                         return "VC-1"
+                
+                # If 'Format' doesn't give a clear answer, check 'Codec ID'
+                codec_match = re.search(r'Codec ID\s*:\s*([^\n]+)', video_content)
+                if codec_match:
+                    codec = codec_match.group(1).strip().upper()
+                    
+                    if 'AVC' in codec or 'H264' in codec or 'MPEG4/ISO/AVC' in codec:
+                        return "H.264"
+                    elif 'HEVC' in codec or 'H265' in codec:
+                        return "H.265"
+                    elif 'VP9' in codec or 'V_VP9' in codec: # Check for both
+                        return "VP9"
+                    elif 'MPEG-2' in codec:
+                        return "MPEG-2"
+                    elif 'VC-1' in codec:
+                        return "VC-1"
+                        
+            # If nothing is found, then fall back
             return "H.264"
         except Exception:
             return "H.264"
